@@ -1,0 +1,196 @@
+
+		<h2 class="text-center">Welcome {{currentUser.userName}}</h2>
+		<div class="container">
+			<div class="row">
+	        	<div class="col s12">
+		          	<div id="profile-card" class="card">
+			            <div class="card-image">
+			              <span href="#invitation" class="new badge modal-trigger">{{counter}}</span>
+			              <img src="/static/img/bg.jpg">
+			            </div>
+			            <div class="card-content">
+			            	<img ng-if="currentUser.points ==0 "src="/static/img/avatar.jpg" alt="" class="circle responsive-img activator card-profile-image activator">
+			            	<img ng-if="(currentUser.points >0) && (currentUser.points <= 50) " src="/static/img/avatar2.jpg" alt="" class="circle responsive-img activator card-profile-image activator">
+			            	<img ng-if="currentUser.points >50 " src="/static/img/avatar3.png" alt="" class="circle responsive-img activator card-profile-image activator">
+			            	<span class="card-title activator grey-text text-darken-4">{{currentUser.userName}}
+			            	<i class="material-icons right">more_vert</i></span>
+			              	<p><i class="mdi-communication-email cyan-text text-darken-2"></i> {{currentUser.email}}</p>
+			              	<p><i ng-if="currentUser.knowledgeIKnow.length == 0" class="heartt"><img src="/static/img/light102.png">not yet added</i></p>
+			              	<p ng-if="currentUser.knowledgeIKnow.length !== 0"> I Know
+			              			<div class="chip" ng-repeat="knowing in currentUser.knowledgeIKnow">
+									    <img src="{{knowing.img}}" alt="Contact Person">
+									    {{knowing.name}}
+									    <i class="material-icons" ng-click="deleteIKnow(knowing)">close</i>
+									</div> 
+			              		
+			              	</p>
+			                <p ng-if="currentUser.knowledgeIWant.length !== 0">I want 
+			                		<div class="chip" ng-repeat="knowing in currentUser.knowledgeIWant">
+									    <img src="{{knowing.img}}" alt="Contact Person">
+									    {{knowing.name}}
+									    <i class="material-icons" ng-click="deleteIWant(knowing)">close</i>
+									</div> 
+			                </p>
+			                <p ng-if="currentUser.knowledgeIWant.length == 0"><img src="/static/img/user36.png">not yet added</p>
+			            </div>
+			            <div class="card-reveal">
+					        <span class="card-title grey-text text-darken-4">{{currentUser.userName}}<i class="material-icons right">close</i></span>
+					        <p class="pCard">Welcome to your profile page, here you can add your profile information and update them anytime you want</p>
+					        <form id="modal3"  ng-submit="updateInfo()">
+							    <div>
+							        <h4 id="updateTitle">Update your personnal information</h4>
+							        <div class="row">
+										  <div class="col s12">
+										   <div class="row">
+										      <div class="input-field col s12">
+										        <input id="email" ng-model="user.email" type="email" class="validate" placeholder="{{currentUser.email}}">
+										        <label for="email">Email</label>
+										      </div>
+										    </div>
+										    <div class="row">
+										      <div class="input-field col s12">
+										        <input id="password" ng-model="user.username" type="password" class="validate" placeholder= "{{currentUser.userName}}">
+										        <label for="password">Username</label>
+										      </div>
+										    </div>
+										  </div>
+									</div>
+							    </div>
+							    <div class="modal-footer">
+							      <button href="" type="submit" class=" waves-effect waves-green btn-flat ">Update</button>
+							    </div>
+						    </form>
+					        <button href="" type="submit" class=" waves-effect waves-green btn-flat ">My symbiotics</button>
+					    </div>
+		            </div>
+        		</div>
+        			<div class ="col s6">
+	        			<h4>Your symbiotics Mentee</h4>
+	        			<ul class="collection" ng-repeat="symbiotic in mentee">
+							<li class="collection-item avatar">
+							    <img ng-if="symbiotic.points == 0"src="/static/img/avatar.jpg" alt="" class="circle">
+							    <img ng-if="(symbiotic.points > 0) && (symbiotic.points <= 50)"src="/static/img/avatar2.jpg" alt="" class="circle">
+							    <img ng-if="symbiotic.points > 50 "src="/static/img/avatar3.png" alt="" class="circle">
+							    <span class="title">{{symbiotic.userName}}</span>
+							    <p>{{symbiotic.email}} <br>
+							    	<p style ="font-weight: bold"> {{symbiotic.points}} points </p>
+							    </p>
+							    <button ui-sref="dashboard({name1:currentUser.userName, name2:symbiotic._id})" class="btn-floating btn-small waves-effect waves-light red secondary-content"><i class="material-icons">supervisor_account</i></button>
+							</li>
+						</ul>
+        			</div>
+        			<div class ="col s6">
+	        			<h4>Your symbiotics Mentors</h4>
+	        			<ul class="collection" ng-repeat="symbiotic1 in mentor">
+							<li class="collection-item avatar">
+							    <img ng-if="symbiotic1.points == 0"src="/static/img/avatar.jpg" alt="" class="circle">
+							    <img ng-if="(symbiotic1.points > 0) && (symbiotic1.points <= 50)"src="/static/img/avatar2.jpg" alt="" class="circle">
+							    <img ng-if="symbiotic1.points > 50 "src="/static/img/avatar3.png" alt="" class="circle">
+							    <span class="title">{{symbiotic1.userName}}</span>
+							    <p>{{symbiotic1.email}} <br>
+							    	<p style ="font-weight: bold"> {{symbiotic1.points}} points </p>
+							    </p>
+							    <button ui-sref="dashboard({name1:currentUser.userName, name2:symbiotic1._id})" class="btn-floating btn-small waves-effect waves-light red secondary-content"><i class="material-icons">supervisor_account</i></button>
+							</li>
+						</ul>
+        			</div>
+      		</div>
+		</div>
+		
+		<div class="container">
+			<div class="row">
+				<form id="modal4" class="col s12 m7" ng-submit="updatePreferences()">
+	   				<div class="">
+	      				<h4 id="">Your preferences</h4>
+			     		<div class="row">
+						  <div class="col s12">
+						    <div class ='row'>
+						    	<label id="label">Select the knowledges you know</label>
+								<md-chips-select ng-model="iKnow" select-items="knowledgeIKnow" md-thumbnail='img' main-title="name"></md-chips-select>
+						   		
+						    </div>
+						    <div class ='row'>
+						    	<label id="label">Select the knowledges you want to learn</label>
+							    <md-chips-select ng-model="iWant" select-items="knowledgeIWant" md-thumbnail='img' main-title="name"></md-chips-select>
+						    </div>
+						  </div>
+						</div>
+	    			</div>
+				    <div class="pull-right" style="float: right">
+				      <button href="" id="updateButton" type="submit" class=" waves-effect waves-green btn-flat ">Update</button>
+				    </div>
+	  			</form>
+				<div class="col s12 m5">
+			        <div id="mypanel" class="card-panel teal">
+			          <span class="white-text">In order to show all the amazing Symbiotics that works for you, you should add your information here, the technologies that you want to learn ,the ones that you know and can share with others. You can also change your preferences anytime, by adding or removing the technologies. Click the button below to find out your Symbiotic matches.
+			          </span>
+			        </div>
+			        <div class ="col s6 offset-s3">
+			        	 <a class="btn waves-effect waves-light modal-trigger" data-target="symbiotics" ng-click="getSymbiotics()" href="#symbiotics" modal>
+					    <i class="material-icons">send</i>
+						</a>
+			        </div>
+			       
+			    </div>
+			    <div id="symbiotics" class="modal modal-fixed-footer">
+			    	<div class="modal-content">
+				        <h4>Your matches Symbiotics</h4>
+				        <div ng-repeat="symbiotic in Symbiotics">
+					        <ul class="collection"  ng-repeat="user in symbiotic.usersWhoKnow">
+							    <li class="collection-item avatar">
+							      <img ng-if="user.points == 0"src="/static/img/avatar.jpg" alt="" class="circle">
+							      <img ng-if="(user.points > 0) && (user.points <= 50)"src="/static/img/avatar2.jpg" alt="" class="circle">
+							      <img ng-if="user.points > 50 "src="/static/img/avatar3.png" alt="" class="circle">
+							      <span class="title">{{user.userName}}</span>
+							      <p>{{user.email}} <br>
+							       <p style ="font-weight: bold"> {{user.points}} points </p>
+							      
+							      </p>
+							      <button href="#!" class="btn-floating btn-small waves-effect waves-light red secondary-content" ng-click="connect(user, currentUser)"><i class="material-icons">add</i></button>
+							    </li>
+							    
+							</ul>
+				        </div>
+				    </div>
+				    <div class="modal-footer">
+				        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat" id="closing">Close</a>
+				    </div>
+							    	
+				</div>
+				<div id="invitation" class="modal modal-fixed-footer">
+					<div class="modal-content">
+					<h4>Your pending invitations</h4>
+						<ul class="collection" ng-repeat="user in invitations">
+						    <li class="collection-item avatar">
+						      <img src="/static/img/avatar.jpg" alt="" class="circle">
+						      <span class="title">{{user.userName}}</span>
+						      <p>{{user.email}} <br>
+						       <p style ="font-weight: bold"> {{user.points}} points </p>
+						      </p>
+						      <button href="#!" id="addButton" class="btn-floating btn-small waves-effect waves-light red secondary-content" ng-click="accept(user, currentUser)"><i class="material-icons">add</i></button>
+						      <button href="#!" class="btn-floating btn-small waves-effect waves-light red secondary-content" ng-click="refuse(user)"><i class="material-icons">remove</i></button>
+						    </li>
+						</ul>
+					 
+					</div>
+					<div class="modal-footer">
+				        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat" id="closee">Close</a>
+				    </div>
+				</div>
+			</div>	
+						</div>
+		 <script type="text/javascript-lazy">
+ 		 		console.log("helloo from the wierd script");
+				$(document).ready( function () {
+					$('.modal-trigger').leanModal();
+					$('#closing').on("click", function() {
+						$('.lean-overlay').remove();
+					});
+
+					$('#closee').on("click", function() {
+						$('.lean-overlay').remove();
+					});
+
+				});
+
+ 		 </script>

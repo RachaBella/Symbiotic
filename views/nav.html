@@ -1,0 +1,93 @@
+<nav class="" id="pageTop" data-ng-init="getCurrentUser()">
+		    <div class="nav-wrapper">
+		      <a ui-sref="/" class="brand-logo">Symbiotic</a>
+		      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+		      <ul class="right hide-on-med-and-down">
+		        <li><a href="/about.html">About</a></li>
+		        <li><a href="#modal1" class="modal-trigger" ng-hide="currentUser">Sign Up</a></li>
+		        <li><a href="/users/{{currentUser.userName}}" class="modal-trigger" ng-show="currentUser">{{currentUser.userName}}</a></li>
+		        <li><a href="#modal2" class="modal-trigger" ng-hide="currentUser">Login</a>
+		        <li><a href="#modal1" class="modal-trigger" ng-show="currentUser" ng-click="logout()">Logout</a></li>
+				
+		        </li>
+		      </ul>
+		      <ul class="left side-nav" id="mobile-demo">
+		         <li><a href="sass.html">About</a></li>
+		        <li><a href="#modal1" class="modal-trigger" ng-hide="currentUser">Sign Up</a>
+		        					
+		        </li>
+		        <li><a href="#modal2" class="modal-trigger" ng-hide="currentUser">Login</a>
+		        </li>
+		      </ul>
+		    </div>
+</nav>
+
+<!-- Modal Structure -->
+	  <form id="modal1" class="modal modal-fixed-footer" ng-submit="signUp()">
+	    <div class="modal-content">
+	      <h4 id="h4">Sign Up form</h4>
+	     		 <div class="row">
+				  <div class="col s12" >
+				    <div class="row">
+				      <div class="input-field col s12">
+				        <input id="username" ng-model="newUser.username" type="text" class="validate">
+				        <label for="username">Username</label>
+				      </div>
+				    </div>
+				    <div class="row">
+				      <div class="input-field col s12">
+				        <input id="email" ng-model="newUser.email" type="email" class="validate">
+				        <label for="email">Email</label>
+				      </div>
+				    </div>
+				    <div class="row">
+				      <div class="input-field col s12">
+				        <input id="password" ng-model="newUser.password" type="password" class="validate">
+				        <label for="password">Password</label>
+				      </div>
+				    </div>
+				    <div class="row">
+				      <div class="input-field col s12">
+				        <input id="password" ng-model="newUser.pass" type="password" class="validate">
+				        <label for="password">Confirm Password</label>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+	    </div>
+	    <div class="modal-footer">
+	      <a href="" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+	      <button href="" type="submit" class="modal-action modal-close waves-effect waves-green btn-flat ">Sign Up</button>
+	    </div>
+	  </form>
+	  <!-- Modal Structure -->
+	  <form id="modal2" class="modal modal-fixed-footer" ng-submit="login()">
+	    <div class="modal-content">
+	      <h4 id="h4">Login form</h4>
+	     		 <div class="row">
+				  <div class="col s12">
+				   <div class="row">
+				      <div class="input-field col s12">
+				        <input id="email" ng-model="user.email" type="email" class="validate">
+				        <label for="email">Email</label>
+				      </div>
+				    </div>
+				    <div class="row">
+				      <div class="input-field col s12">
+				        <input id="password" ng-model="user.password" type="password" class="validate">
+				        <label for="password">Password</label>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+	    </div>
+	    <div class="modal-footer">
+	      <a href="" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+	      <a href="" type="submit" class="modal-action modal-close waves-effect waves-green btn-flat ">Login</a>
+	    </div>
+	  </form>
+  		<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+		    <a class="btn-floating btn-large scrollUp" href="#pageTop" data-scroll>
+		      <i class="large material-icons fa fa-chevron-up" id="arrowUp">keyboard_arrow_up</i>
+		    </a>
+ 		 </div>	

@@ -1,0 +1,54 @@
+{
+  "name": "md-chips-select",
+  "version": "1.0.0",
+  "description": "Material design md-chips with multiple select menu",
+  "main": "md-chips-select.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "angular": "~1.4.3",
+    "angular-animate": "~1.4.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/boo0330/md-chips-select.git"
+  },
+  "keywords": [
+    "md-chips",
+    "md-chip-select",
+    "material design",
+    "angular"
+  ],
+  "author": {
+    "name": "Nate Cheng",
+    "email": "boo0330@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/boo0330/md-chips-select/issues"
+  },
+  "homepage": "https://github.com/boo0330/md-chips-select#readme",
+  "gitHead": "8dfaa2e6874f715caaac8263b3c953a7ba860066",
+  "_id": "md-chips-select@1.0.0",
+  "_shasum": "7956df759686e882d68303768669f0cef2c97374",
+  "_from": "md-chips-select@*",
+  "_npmVersion": "2.13.3",
+  "_nodeVersion": "0.12.7",
+  "_npmUser": {
+    "name": "boo0330",
+    "email": "boo0330@gmail.com"
+  },
+  "dist": {
+    "shasum": "7956df759686e882d68303768669f0cef2c97374",
+    "tarball": "http://registry.npmjs.org/md-chips-select/-/md-chips-select-1.0.0.tgz"
+  },
+  "maintainers": [
+    {
+      "name": "boo0330",
+      "email": "boo0330@gmail.com"
+    }
+  ],
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/md-chips-select/-/md-chips-select-1.0.0.tgz"
+}
