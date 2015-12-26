@@ -1,7 +1,7 @@
 
 var app = angular.module('Symbiotic');
 
-app.factory("symbioticService", function () {
+app.factory("symbioticService", ['$http', function ($http) {
 	
 	this.mySymbiotic= [];
 	//Getting the current user symbiotic :
@@ -71,6 +71,15 @@ app.factory("symbioticService", function () {
     		}
 			return mentor;
 
+    	},
+    	//users/:id/mySymbiotic
+    	getSymbiotic: function (userId) {
+    		$http
+    		.get("/users/"+ userId +"/mySymbiotic")
+    		.then( function (response) {
+    			return response.data;
+    		})
+
     	}
     }
-});
+}]);

@@ -8,16 +8,21 @@ app.controller('MainCtrl', ['$scope','$http','symbioticService', function ($scop
 	$scope.signUp = function() {
 		console.log("helloooo");
 		console.log("new user", $scope.newUser)
-		if($scope.newUser.pass === $scope.newUser.password) {
+		if(( $scope.newUser.password !=="") &&($scope.newUser.pass === $scope.newUser.password)) {
 			$http
 				.post('/users', $scope.newUser)
 				.then(function(response){
 					if(response.data =="Error") {
 						alert("This email or username is already taken, Try again");
 						$scope.newUser={}
+					} else if (response.data ==="Username exists") {
+						alert("This username is already taken, try a new one")
+					} else if (response.data ==="Email exists") {
+						alert("This email already exists, try again")
 					} else {
 						console.log('the response is', response.data);
 					    $scope.currentUser = response.data;
+						Materialize.toast('Welcome '+ $scope.currentUser.userName  +' to Symbiotic.', 5000);
 					    $scope.getKnowledgeIKnow();
 						$scope.getKnowledgeIWant();
 					        // self.all = response.data.criminals;
@@ -43,6 +48,7 @@ app.controller('MainCtrl', ['$scope','$http','symbioticService', function ($scop
 				$scope.user ={};
 			} else if ((response.data !== "Error: incorrect password") && (response.data !=="wrong email") && (response !== null )) {
 				$scope.currentUser = response.data;
+				Materialize.toast('Welcome Back '+ $scope.currentUser.userName + ' to Symbiotic.', 5000);
 				$scope.getKnowledgeIKnow();
 				$scope.getKnowledgeIWant();
 			}

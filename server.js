@@ -32,8 +32,6 @@ app.use(bodyParser.urlencoded({
 
 //sessions
 app.use(session);
-
-
 app.get('/templates/:name', resources.templates);
 
 app.get("/", function (req, res) {
@@ -41,18 +39,34 @@ app.get("/", function (req, res) {
 });
 
 //Creating a new user
+var sessionUser = null;
 app.post('/users', function (req, res) {
 	var user = req.body
 	console.log("the user is", user);
-	db.User.createSecure(user.username, user.email, user.password, function (error, newUser) {
-		if (error) {
-			console.log("Error OCCURED : *****", error.message);
-			res.send("Error");
+	db.User.checkEmail(user.email, function (result) {
+		if (result ==="Email exists") {
+			res.send("Email exists")
+		} else {
+			db.User.checkUsername(user.username, function (result2) {
+				if (result2 ==="Username exists") {
+					res.send("Username exists")
+				} else {
+					db.User.createSecure(user.username, user.email, user.password, function (error, newUser) {
+					if (error) {
+						console.log("Error OCCURED : *****", error.message);
+						res.send("Error");
+					}
+					req.session.user = newUser;
+					sessionUser = newUser;
+					req.session.id= newUser._id;
+					res.send(newUser);
+				})
+
+				}
+			})
 		}
-		req.session.user = newUser;
-		req.session.id= newUser._id;
-		res.send(newUser);
 	})
+	
 });
 
 //Get the current user details
@@ -146,6 +160,7 @@ app.put("/users/:id", function (req, res) {
 //log out :
 app.get('/logout', function (req , res) {
 	req.session.user = null;
+	sessionUser = null;
 	req.session.id=null;
 	res.json(req.session.user);
 });
@@ -161,6 +176,7 @@ app.post("/login", function (req, res) {
 		} else if (userFound !== null) {
 			req.session.id = userFound._id;
 			req.session.user = userFound;
+			sessionUser = userFound;
 			console.log("session verification :", req.session.id )
 			res.json(userFound);
 		}
@@ -169,29 +185,71 @@ app.post("/login", function (req, res) {
 
 //Getting the knowledges that will show up in the what the user knows select options, excluding what he has already chosen
 app.get("/users/:id/knowledgeIKnow", function (req, res) {
-	db.Knowledge.find({}, function (error, knowledges) {
+	db.Knowledge.find().populate("usersWhoKnow").exec( function (error, knowledges) {
 		if (error) {
 			res.send("Error");
 		}
 		else {
+			//if it's the first time, it should return all the knowledges 
 			var knowledgesIKnow = req.session.user.knowledgeIKnow;
-			var result= [];
-			knowledges = knowledges.concat(knowledgesIKnow);
-			var length1 = knowledges.length;
-			var i=0, j=0;
-			for ( i =0; i < length1; i++) {
-				var found = false;
-				for (j =0; j < result.length; j++) {
-					if (knowledges[i] == result[j]._id) {
-						found= true;
-						result.splice(j,1);
+			if (knowledgesIKnow === []) {
+				res.send(knowledges)
+			} else {
+				var result= [];
+				console.log("*****************Knowledges know ***********")
+				var length = knowledges.length;
+
+				for (var i=0; i <length; i++) {
+					var found = false;
+					var length2 = knowledges[i].usersWhoKnow.length;
+					for (var j=0; j< length2; j++) {
+						if (req.params.id == knowledges[i].usersWhoKnow[j]._id) {
+							found = true;
+							console.log("****user found ----> true !!!!!!")
+							break;
+						}
 					}
-				}
-				if (!found) {
-					result.push(knowledges[i]);
+					if (found === false) {
+						result.push(knowledges[i]);
+					}
 				}
 			}
 			res.send(result);
+		}
+	})
+});
+
+//Getting the knowledges that will show up in the what user wants select options, excluding what he has already chosen
+app.get("/users/:id/knowledgeIWant", function (req, res) {
+	db.Knowledge.find().populate("usersWhoWant").exec( function (error, knowledges) {
+		if (error) {
+			res.send("Error");
+		}
+		else {
+			var knowledgesIWant = req.session.user.knowledgeIWant;
+			if (knowledgesIWant === []) {
+				res.send(knowledges);
+				console.log("****EMPTYYYY*****");
+			} else {
+				var result= [];
+				var length = knowledges.length;
+				for (var i=0; i< length; i++) {
+					var found = false;
+					var length2 = knowledges[i].usersWhoWant.length;
+					for (var j=0; j< length2; j++) {
+						if (req.params.id == knowledges[i].usersWhoWant[j]._id) {
+							found =true;
+							console.log("****user found ----> true !!!!!!")
+							break;
+						}
+					}
+					if (found === false) {
+						result.push(knowledges[i]);
+					}
+				}
+				res.send(result);
+
+			}
 		}
 	})
 });
@@ -306,9 +364,11 @@ app.get("/users/:id/MatchingSymbiotics", function (req, res) {
 		for (var i=0; i<l ; i++) {
 			//console.log("loop i");
 			//console.log("the usersWhoknow of the results query", results[i].usersWhoKnow);
-			for (var j =0; j < results[i].usersWhoKnow.length; j++) {
+			var length = results[i].usersWhoKnow.length
+			for (var j =0; j < length ; j++) {
 				//console.log("loop j")
-				for (var k=0; k< results[i].usersWhoKnow[j].mySymbiotic.length; k++) {
+				var length2 = results[i].usersWhoKnow[j].mySymbiotic.length;
+				for (var k=0; k< length2; k++) {
 					//console.log("loop k, symbiotic :", results[i].usersWhoKnow[j].mySymbiotic[k], "and the id of this user: ", req.params.id);
 					if (results[i].usersWhoKnow[j].mySymbiotic[k] == req.params.id) {
 						found =true;
@@ -316,7 +376,7 @@ app.get("/users/:id/MatchingSymbiotics", function (req, res) {
 						break;
 					}
 				}
-				if (found !== true) {
+				if (found === false) {
 					filtredUsersWhoKnow.push(results[i].usersWhoKnow[j]);
 				}
 				found = false;
@@ -368,34 +428,6 @@ app.get("/users/:id/MatchingSymbiotics", function (req, res) {
 	// })
 });
 
-//Getting the knowledges that will show up in the what user wants select options, excluding what he has already chosen
-app.get("/users/:id/knowledgeIWant", function (req, res) {
-	db.Knowledge.find({}, function (error, knowledges) {
-		if (error) {
-			res.send("Error");
-		}
-		else {
-			var knowledgesIWant = req.session.user.knowledgeIWant;
-			knowledges= knowledges.concat(knowledgesIWant);
-			var result= [];
-			var length1 = knowledges.length;
-			for (var i =0; i < length1; i++) {
-				var found = false
-				for (var j =0; j < result.length; j++) {
-					if (knowledges[i]== result[j]._id) {
-						found= true
-						result.splice(j,1);
-					}
-				}
-				if (!found) {
-					result.push(knowledges[i]);
-				}
-			}
-			res.send(result);
-		}
-	})
-});
-
 //posting the user's preferences
 app.put("/knowledges", function (req, res) {
 	var cpt =0;
@@ -443,7 +475,10 @@ app.put("/knowledges", function (req, res) {
 						// console.log("the counter is: ", cpt)
 						if (cpt === length1 + length2) {
 							req.session.user = user;
-							res.send(user);
+							db.User.findOne({_id: user._id}).populate("knowledgeIKnow").populate('knowledgeIWant').exec( function (error, userr) {
+							res.send(userr);
+								
+							})
 						} 
 					}
 				});
@@ -492,6 +527,17 @@ app.get('/users/:name1/Symbiose/:name2', function (req, res) {
 	});
 });
 
+//deleting a user from sockets 
+app.delete("/sockets/:id", function (req, res) {
+	db.Socket.remove({userI: req.session.user._id}, function (error, deleted) {
+		if(error) {
+
+		}else {
+			res.send(deleted);
+		}
+	})
+});
+
 app.get("*", resources.index);
 
 var io = require('socket.io').listen(server);
@@ -499,11 +545,23 @@ var clients= [];
 io.use(sharedsession(session));
 io.on('connection', function(socket){
 	console.log("************the clients*********",clients)
-    console.log(socket.handshake.session.user);
     console.log("connected");
+    console.log("//**********THE HANDSHAKE IS ////", socket.handshake.session.user)
     if ((socket.handshake.session.user !== null) && (socket.handshake.session.user !== undefined)) {
-		clients.push({user:socket.handshake.session.user._id,
-				 id: socket.id});
+    	var i= clients.map(function(e) { return e.user; }).indexOf(socket.handshake.session.user._id);
+    	if(i=== -1) {
+			clients.push({
+							user:socket.handshake.session.user._id,
+					 		id: socket.id});
+			db.Socket.find({userI: socket.handshake.session.user._id}).populate("userI").populate('current').exec(function( error, userFound) {
+				if (userFound.length) {
+					console.log("****THE USER IS ONLINE AGAIN EMIIIIIT TO HIM §§§******", userFound)
+					console.log("And the clients are" , clients);
+					console.log("the socket id is :", socket.id)
+					io.to(socket.id).emit('invitationRequest', userFound);
+				}
+			});
+    	}
 	}
 	
 	console.log("*************the clients are************",clients)
@@ -512,7 +570,19 @@ io.on('connection', function(socket){
     	console.log("invitationRequest data is ", data)
     	var i= clients.map(function(e) { return e.user; }).indexOf(data.userI._id);
     	console.log("the index of the invited person in clients table is i:", i);
-    	socket.broadcast.to(clients[i].id).emit('invitationRequest', data);
+    	if (i !== -1) {
+    		socket.broadcast.to(clients[i].id).emit('invitationRequest', data);
+    	} else {
+    	  db.Socket.create({userI:data.userI, current: data.current}, function (error, userSaved) {
+    	  	if (error) {
+    	  		var i= clients.map(function(e) { return e.user; }).indexOf(data.current._id);
+    	  		socket.broadcast.to(clients[i].id).emit('invitationResponse', {msg:"Error", user: data.userI});
+
+    	  	} else {
+    	  		console.log('the socket user is saved : ', userSaved);
+    	  	}
+    	  })
+    	}
     	// io.emit('invitationRequest', data)
         // console.log("client["+socket.handshake.session.user._id+"] sent data: " + data);
     });
@@ -570,9 +640,19 @@ io.on('connection', function(socket){
     });
 
     socket.on('disconnect', function () {
-    	clients.splice(clients.indexOf({id:socket.id}), 1); 
-    	console.log("client disconnected :", socket.id);
-    	console.log(clients);
+    	if ((sessionUser === null) || (sessionUser === undefined)) {
+    		socket.handshake.session.user =null
+    		console.log("///*************///********NO SESSION*****");
+    		clients.splice(clients.indexOf({id:socket.id}), 1); 
+    		console.log("client disconnected :", socket.id);
+    		console.log(clients);
+    	} else {
+    		console.log("§§§§§Is THERE HERE A HANDSHAKE §§§§§§",socket.handshake.session.user._id);
+    		console.log("still online");
+    		console.log(clients);
+
+    	}
+    	
     })
 });
 server.listen(process.env.PORT || 3000, function () {

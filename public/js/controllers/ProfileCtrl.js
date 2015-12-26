@@ -21,7 +21,7 @@ app.controller('ProfileCtrl',['$http', '$scope', 'socket','symbioticService', fu
       symbioticService.setmySymbiotic($scope.mySymbiotic);
       console.log("the symbioticService set to :" , symbioticService.getmySymbiotic() )
       console.log("lets see the structure :", $scope.mySymbiotic);
-       //I have to devise  : who currentUser is mentoring, who is menterd by ?
+       //I have to devise  : who currentUser is mentoring, who is mentOrEd by ?
       $scope.mentee = symbioticService.getMyMentees($scope.currentUser, $scope.mySymbiotic);
       $scope.mentor =  symbioticService.getMyMentors($scope.currentUser,$scope.mySymbiotic);
     }                      
@@ -112,22 +112,22 @@ app.controller('ProfileCtrl',['$http', '$scope', 'socket','symbioticService', fu
     			alert("Sorry , you have no match");
     		}
     		else {
-    			console.log(response.data);
-    			$scope.doubledSymbiotics = response.data;
-          var result= [];
-          for (var i=0; i< $scope.doubledSymbiotics.length; i++ ) {
-            var found = false
-            for(j=0; j< result.length; j++) {
-              if ( $scope.doubledSymbiotics[i].userName === result[j].userName) {
-                found= true
-              }
-            }
-            if (found!== true) {
-              result.push(  $scope.doubledSymbiotics[i]);
-            }
-          }
-          $scope.Symbiotics = result;
-          console.log("your symbiotics : those people ", response.data[0].usersWhoKnow, "know :", response.data[0].name)
+    			console.log("Your possible matched symbiotics are : ", response.data);
+    			//$scope.doubledSymbiotics = response.data;
+          // var result= [];
+          // for (var i=0; i< $scope.doubledSymbiotics.length; i++ ) {
+          //   var found = false
+          //   for(j=0; j< result.length; j++) {
+          //     if ( $scope.doubledSymbiotics[i].userName === result[j].userName) {
+          //       found= true
+          //     }
+          //   }
+          //   if (found!== true) {
+          //     result.push(  $scope.doubledSymbiotics[i]);
+          //   }
+          // }
+          $scope.Symbiotics = response.data;
+          //console.log("your symbiotics : those people ", response.data[0].usersWhoKnow, "know :", response.data[0].name)
     		}
 
     	});
@@ -158,23 +158,26 @@ app.controller('ProfileCtrl',['$http', '$scope', 'socket','symbioticService', fu
     socket.on("invitationResponse", function(data) {
     	if (data.msg=="refuse"){
     		console.log(data.user.userName + "has refused your invitation");
-        Materialize.toast('Your invitation request to '+ data.userName +' has been refused ', 10000);
+        Materialize.toast('Your invitation request to '+ data.userName +' has been refused ', 5000);
     	}
       else {
         if (data.msg=="Error"){
-        Materialize.toast('An error occured when adding '+ data.user.userName +' , Invite him again', 10000);
-        console.log(data.user.userName + "has accepted your invitation");
+        Materialize.toast('An error occured when adding '+ data.user.userName +' , Invite him again', 5000);
       } else if (data.msg== "SuccessAdding"){
         console.log("on successAdding state !!!!!!!!", data);
-        Materialize.toast(data.data.userName +' has been added successfully to the list of your symbiotics', 10000);
+        Materialize.toast(data.data.userName +' has been added successfully to the list of your symbiotics', 5000);
          console.log("lets see the structure of the data sent: at SuccessAdding", data.data)
         $scope.mySymbiotic.push(data.data);
         symbioticService.setmySymbiotic($scope.mySymbiotic);
+        $scope.mentee = symbioticService.getMyMentees($scope.currentUser, $scope.mySymbiotic);
+        $scope.mentor =  symbioticService.getMyMentors($scope.currentUser,$scope.mySymbiotic);
       } else if (data.msg=="Success") {
-        Materialize.toast(data.data.userName +' has accepted your invitation request', 10000);
+        Materialize.toast(data.data.userName +' has accepted your invitation request', 5000);
         console.log("lets see the structure of the data sent: at Success", data.data)
         $scope.mySymbiotic.push(data.data);
         symbioticService.setmySymbiotic($scope.mySymbiotic);
+        $scope.mentee = symbioticService.getMyMentees($scope.currentUser, $scope.mySymbiotic);
+        $scope.mentor =  symbioticService.getMyMentors($scope.currentUser,$scope.mySymbiotic);
       }
 
       } 
@@ -185,10 +188,21 @@ app.controller('ProfileCtrl',['$http', '$scope', 'socket','symbioticService', fu
     })
 
     socket.on("invitationRequest", function(data) {
-    	  Materialize.toast('You have an invitation request from '+ data.current.userName , 10000);
-        $scope.counter++;
-        $scope.invitations.push(data.current);
-        console.log('the data from the invitation request is ', data)
+    	  Materialize.toast('You have an invitation request', 5000);
+        
+        for (var i =0; i< data.length; i++) {
+           $scope.invitations.push(data[i].current);
+           $scope.counter++;
+
+        }
+        $http
+        .delete("/sockets/"+ $scope.currentUser._id)
+        .then(function (response) {
+          if (response.data) {
+            console.log("DELETED", response.data);
+          }
+        })
+        console.log('the data from the invitation request is ', data.current)
         console.log('an invitation request  recieved!!');
     })
    

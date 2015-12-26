@@ -10,3 +10,4 @@ module.exports.Knowledge = require("./knowledge.js");
 module.exports.Post= require("./post.js");
 module.exports.Comment = require("./comment.js");
 module.exports.User= require("./user.js");
+module.exports.Socket = require("./sockets.js");

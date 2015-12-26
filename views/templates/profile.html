@@ -1,6 +1,12 @@
-
-		<h2 class="text-center">Welcome {{currentUser.userName}}</h2>
+      
 		<div class="container">
+			<div class="row">
+		      <div class="col s12 m12 l12">
+		        <div class="card-panel blue">
+		          <h3 class="text-center white-text">Welcome {{currentUser.userName}}</h3>
+		        </div>
+		      </div>
+		    </div>
 			<div class="row">
 	        	<div class="col s12">
 		          	<div id="profile-card" class="card">
@@ -44,13 +50,13 @@
 										   <div class="row">
 										      <div class="input-field col s12">
 										        <input id="email" ng-model="user.email" type="email" class="validate" placeholder="{{currentUser.email}}">
-										        <label for="email">Email</label>
+										        <label class="active" for="email">Email</label>
 										      </div>
 										    </div>
 										    <div class="row">
 										      <div class="input-field col s12">
 										        <input id="password" ng-model="user.username" type="password" class="validate" placeholder= "{{currentUser.userName}}">
-										        <label for="password">Username</label>
+										        <label class="active" for="password">Username</label>
 										      </div>
 										    </div>
 										  </div>
@@ -64,10 +70,12 @@
 					    </div>
 		            </div>
         		</div>
-        			<div class ="col s6">
-	        			<h4>Your symbiotics Mentee</h4>
-	        			<ul class="collection" ng-repeat="symbiotic in mentee">
-							<li class="collection-item avatar">
+        			<div class ="col s6 l6 m6">			      
+					    <div class="card-panel blue">
+					        <h5>Your symbiotics Mentee</h5>
+					    </div>
+	        			<ul class="collection col s12" ng-repeat="symbiotic in mentee">
+							<li class="collection-item avatar yellow">
 							    <img ng-if="symbiotic.points == 0"src="/static/img/avatar.jpg" alt="" class="circle">
 							    <img ng-if="(symbiotic.points > 0) && (symbiotic.points <= 50)"src="/static/img/avatar2.jpg" alt="" class="circle">
 							    <img ng-if="symbiotic.points > 50 "src="/static/img/avatar3.png" alt="" class="circle">
@@ -75,14 +83,16 @@
 							    <p>{{symbiotic.email}} <br>
 							    	<p style ="font-weight: bold"> {{symbiotic.points}} points </p>
 							    </p>
-							    <button ui-sref="dashboard({name1:currentUser.userName, name2:symbiotic._id})" class="btn-floating btn-small waves-effect waves-light red secondary-content"><i class="material-icons">supervisor_account</i></button>
+							    <button ui-sref="dashboard({name1:symbiotic.userName, name2:currentUser._id})" class="btn-floating btn-small waves-effect waves-light red secondary-content"><i class="material-icons">supervisor_account</i></button>
 							</li>
 						</ul>
         			</div>
-        			<div class ="col s6">
-	        			<h4>Your symbiotics Mentors</h4>
-	        			<ul class="collection" ng-repeat="symbiotic1 in mentor">
-							<li class="collection-item avatar">
+        			<div class ="col s6 m6 l6">
+	        			<div class="card-panel blue">
+					        <h5>Your symbiotics Mentors</h5>
+					    </div>
+	        			<ul class="collection col s12" ng-repeat="symbiotic1 in mentor">
+							<li class="collection-item avatar yellow">
 							    <img ng-if="symbiotic1.points == 0"src="/static/img/avatar.jpg" alt="" class="circle">
 							    <img ng-if="(symbiotic1.points > 0) && (symbiotic1.points <= 50)"src="/static/img/avatar2.jpg" alt="" class="circle">
 							    <img ng-if="symbiotic1.points > 50 "src="/static/img/avatar3.png" alt="" class="circle">
@@ -101,7 +111,9 @@
 			<div class="row">
 				<form id="modal4" class="col s12 m7" ng-submit="updatePreferences()">
 	   				<div class="">
-	      				<h4 id="">Your preferences</h4>
+	      				<div class="card-panel blue">
+					        <h5>Your Preferences</h5>
+					    </div>
 			     		<div class="row">
 						  <div class="col s12">
 						    <div class ='row'>
@@ -117,16 +129,16 @@
 						</div>
 	    			</div>
 				    <div class="pull-right" style="float: right">
-				      <button href="" id="updateButton" type="submit" class=" waves-effect waves-green btn-flat ">Update</button>
+				      <button href="" id="updateButton" type="submit" class=" waves-effect waves-green btn-flat red">Update</button>
 				    </div>
 	  			</form>
 				<div class="col s12 m5">
-			        <div id="mypanel" class="card-panel teal">
+			        <div id="mypanel" class="card-panel col s12">
 			          <span class="white-text">In order to show all the amazing Symbiotics that works for you, you should add your information here, the technologies that you want to learn ,the ones that you know and can share with others. You can also change your preferences anytime, by adding or removing the technologies. Click the button below to find out your Symbiotic matches.
 			          </span>
 			        </div>
 			        <div class ="col s6 offset-s3">
-			        	 <a class="btn waves-effect waves-light modal-trigger" data-target="symbiotics" ng-click="getSymbiotics()" href="#symbiotics" modal>
+			        	 <a class="btn waves-effect waves-light modal-trigger red" data-target="symbiotics" ng-click="getSymbiotics()" href="#symbiotics" modal>
 					    <i class="material-icons">send</i>
 						</a>
 			        </div>
@@ -143,6 +155,7 @@
 							      <img ng-if="user.points > 50 "src="/static/img/avatar3.png" alt="" class="circle">
 							      <span class="title">{{user.userName}}</span>
 							      <p>{{user.email}} <br>
+							      <p>{{symbiotic.name}}</p>
 							       <p style ="font-weight: bold"> {{user.points}} points </p>
 							      
 							      </p>

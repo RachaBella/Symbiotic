@@ -55,6 +55,7 @@ userSchema.statics.createSecure = function(username, email , password, callback)
 	var user = this;
 	//console.log("we are in the secure function creation");
     // hash password user enters at sign up
+
     bcrypt.genSalt(function (err, salt) {
 	    bcrypt.hash (password, salt, function (err, hash) {
 		    //console.log(hash);
