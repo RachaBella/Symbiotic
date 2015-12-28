@@ -27,6 +27,11 @@ app.config( function ($stateProvider, $urlRouterProvider, $locationProvider) {
           controller:"DashBoardCtrl"
     
     })
+
+    .state('about', {
+      url:'/about',
+      templateUrl:'/templates/about.html'
+    })
      
 
     .state('profile', {

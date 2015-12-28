@@ -517,7 +517,7 @@ app.get('/users/:name1/Symbiose/:name2', function (req, res) {
 		        }
 			}
 		]	
-	}).populate("owner", "userName", "points").populate("watcher" , "userName", "points").exec(function (error, results) {
+	}).populate("owner").populate("watcher").exec(function (error, results) {
 		if(error) {
 			console.log("ERROR " , error.message)
 			res.send("Error");
@@ -526,6 +526,25 @@ app.get('/users/:name1/Symbiose/:name2', function (req, res) {
 		}
 	});
 });
+
+//posting a posta
+app.post('/posts/:ownerId/:watcherId', function (req, res) {
+	var post = {
+		title: req.body.title,
+		owner: req.params.ownerId,
+		watcher: req.params.watcherId,
+		content: req.body.content,
+		knowledge : req.body.knowledge.id,
+		image:""
+	}
+	db.Post.create(post, function (error, newPost) {
+		if (error) {
+			res.send("Error");
+		} else {
+			res.send(newPost);
+		}
+	})
+})
 
 //deleting a user from sockets 
 app.delete("/sockets/:id", function (req, res) {

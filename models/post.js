@@ -1,10 +1,11 @@
 var mongoose = require('mongoose'),
 	user = require("./user.js"),
+	knowledge = require("./knowledge.js"),
 	Schema = mongoose.Schema;
 
 
 var postSchema = new Schema ({
-	Title: {
+	title: {
 		require:true,
 		type:String
 	},
@@ -14,6 +15,11 @@ var postSchema = new Schema ({
 	watcher: {
 		type:Schema.Types.ObjectId, ref :"User"
 	},
+
+	knowledge: {
+		type:Schema.Types.ObjectId, ref :"knowledge"
+	},
+
 	content:{
 		type:String,
 		require:true

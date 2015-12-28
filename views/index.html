@@ -30,7 +30,7 @@
 		      <a ui-sref="index" class="brand-logo">Symbiotic</a>
 		      <a href="#" data-activates="mobile-demo" class="button-collapse" data-sidenav="left" data-menuwidth="500" data-closeonclick="false"><i class="material-icons">menu</i></a>
 		      <ul class="right hide-on-med-and-down">
-		        <li><a href="/about.html">About</a></li>
+		        <li><a ui-sref="about">About</a></li>
 		        <li><a href="#modal1" class="modal-trigger" ng-hide="currentUser">Sign Up</a></li>
 		        <li><a ui-sref="profile({name : currentUser.userName})" ng-click="getCurrentUser()" class="modal-trigger" ng-show="currentUser">{{currentUser.userName}}</a></li>
 		        <li><a href="#modal2" class="modal-trigger" ng-hide="currentUser">Login</a>
@@ -39,7 +39,7 @@
 		        </li>
 		      </ul>
 		      <ul class="left side-nav" id="mobile-demo">
-		         <li><a href="sass.html">About</a></li>
+		         <li><a ui-sref="about">About</a></li>
 		         <li><a href="#modal1" class="modal-trigger" ng-hide="currentUser">Sign Up</a></li>
 		         <li><a href="#modal2" class="modal-trigger" ng-hide="currentUser">Login</a>
 		         <li><a ui-sref="profile({name : currentUser.userName})" class="modal-trigger" ng-show="currentUser">{{currentUser.userName}}</a></li>

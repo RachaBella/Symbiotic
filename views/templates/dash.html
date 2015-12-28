@@ -49,25 +49,110 @@
 		        </div>
 	   			
 	    	</div>
-	    	<div class="col m9 l9 s12 postsContainer container">
-	        	 <ul class="collapsible" data-collapsible="accordion">
+	    	
+	        	 <!-- <ul class="collapsible" data-collapsible="accordion">
 				    <li ng-repeat="knowledge in knowledges">
-				      <div class="collapsible-header"><i class="material-icons">filter_drama</i>{{knowledge}}</div>
-				      <div class="collapsible-body">
+				      <div class="collapsible-header blue"><i class="material-icons">filter_drama</i>{{knowledge}}</div>
+				      <div class="collapsible-body blue lighten-5">
+				      	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 
-							<div class="input-field col s9 ">
+						
 						          <input placeholder="" id="" type="text" class="validate" ng-model="newPost.content">
 						          <label for="first_name">Write your post here</label>
-						    </div>
-						    <div class="col s3">
+						    <!-- <div class="col m3 s12 l9">
 						        	<button id="addPostButton" href="#!" class="btn-floating btn-small waves-effect waves-light red secondary-content" ng-click="addPost()"><i class="material-icons">add</i></button>
-						    </div>
+						    </div> 
 				      </div>
 				    </li>
 				    
-				  </ul>
+				  </ul> -->
+
+				 <div class="col s12 m9 l9">
+                <div class="row">
+                  <div class="col s12">
+                    <ul class="tabs tab-demo-active z-depth-1" style="width: 100%;">
+                      <li class="tab col s3" style="width: 33.3333%;"><a class="white-text blue darken-1 waves-effect waves-light"  href="#sapien1"> {{knowledge0.name}}</a>
+                      </li>
+                      <li class="tab col s3" style="width: 33.3333%;" ng-repeat='knowledge in knowledges'><a class="white-text blue darken-1 waves-effect waves-light"  href="#{{knowledge.id}}"> {{knowledge.name}}</a>
+                      </li>
+
+                      <div class="indicator" style="right: 373px; left: 0px;"></div>
+                      <div class="indicator" style="right: 373px; left: 0px;"></div>
+                      
+
+                    </ul>
+                  </div>
+                  <div class="col s12">
+                    <div id="sapien1" class="col s12  light-blue lighten-5" style="display: block;">
+                     	 <div class="row">
+                      		<form ng-submit="addPost(knowledge0)" >
+                       	
+                      		<div class ="input-field col s12">
+                      			<input type="text" id="title" class="validate" ng-model="newPost.title">
+                          		<label for="title" class="postLabel">Post title</label>
+                      		</div>
+                          <div class="input-field col s12">
+                            <textarea id="name" class="materialize-textarea" type="text" ng-model="newPost.content" class="validate" length="300"></textarea>
+                            <label for="first_name" class="postLabel">write your post here</label>
+                            <span class="character-counter" style="float: right; font-size: 12px; height: 1px;"></span>
+                          </div>
+                          <div class="col s12 right">
+                          	  <button class="btn cyan waves-effect waves-light right" type="submit" name="action">Submit
+                                <i class="mdi-content-send right"></i>
+                              </button>
+                          </div>
+                       </form>
+                        </div>
+
+                    </div>
+
+                    <div id="{{knowledge.id}}" class="col s12  light-blue lighten-5 something" style="display: none;" ng-repeat='knowledge in knowledges'>
+                      <div class="row">
+                       <form ng-submit="addPost(knowledge)">
+                       	
+                      		<div class ="input-field col s12">
+                      			<input type="text" id="title" class="validate" ng-model="newPost.title">
+                          		<label for="title" class="postLabel">Post title</label>
+                      		</div>
+                          <div class="input-field col s12">
+                            <textarea id="name" class="materialize-textarea" type="text" ng-model="newPost.content" class="validate" length="300"></textarea>
+                            <label for="first_name" class="postLabel">write your post here</label>
+                            <span class="character-counter" style="float: right; font-size: 12px; height: 1px;"></span>
+                          </div>
+                          <div class="col s12 right">
+                          	  <button class="btn cyan waves-effect waves-light right" type="submit" name="action">Submit
+                                <i class="mdi-content-send right"></i>
+                              </button>
+                          </div>
+                       </form>
+                        </div>
+						
+                        <div class="card medium" ng-repeat="post in data">
+			                    <div class="card-image">
+			                      <img src="/static/img/tech2.jpg" alt="sample">
+			                      <span class="card-title" id="title2">{{post.title}}</span>
+			                    </div>
+			                    <div class="card-content">
+			                      <p class="ultra-small">June 30, 2015</p>
+			                      <p>{{post.content}}.</p>
+
+			                    </div>
+			                    <div class="card-action">
+			                      By <a href="#">{{post.owner.userName}}</a>
+			                      <a href="#" class="right">Comment &gt;</a>
+			                    </div>
+			            </div>
+
+                    </div>
+
+                    
+                  
+    
+                  </div>
+                </div>
+              </div>
         
-			</div>
+			
 				    
 
 
@@ -106,7 +191,7 @@
 
   		$('.parallax').parallax();
 	 	$('.tooltipped').tooltip({delay: 50});
-    	// $('ul.tabs').tabs();
+    	$('ul.tabs').tabs();
     	$('.collapsible').collapsible({
       accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
     });

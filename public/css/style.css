@@ -171,10 +171,24 @@ footer.page-footer {
     background: #e53935
 }
 
+.blank {
+    height: 50px
+}
 .side-nav{
    background:#2c3e50 !important;
 }
 
+.aboutImg {
+    margin-top: 20px;
+}
+
+.developer {
+
+    font-size: 24px;
+    font-weight: 300;
+    text-align: center;
+    vertical-align: middle;
+}
 #h4{
     color: white;
     text-align: center;
@@ -232,9 +246,18 @@ footer.page-footer {
 }
 
  /* label color */
-   .input-field label {
+.input-field label {
      color: white;
 }
+
+.input-field .postLabel {
+    color: black;
+}
+ 
+#title2 {
+    color: white !important
+}
+
 #profile-card .card-image {
     height: 150px;
 }
@@ -385,4 +408,13 @@ input[type=text]:focus:not([readonly]) {
 
 .myRow {
     margin-top: 10px;
+}
+
+.tabs .indicator {
+    position: absolute;
+    bottom: 0;
+    height: 3px;
+    background-color: #2c3e50;
+    will-change: left, right;
+    z-index: 10000;
 }
