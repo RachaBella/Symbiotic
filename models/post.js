@@ -17,7 +17,7 @@ var postSchema = new Schema ({
 	},
 
 	knowledge: {
-		type:Schema.Types.ObjectId, ref :"knowledge"
+		type:Schema.Types.ObjectId, ref :"Knowledge"
 	},
 
 	content:{

@@ -103,6 +103,21 @@
                           </div>
                        </form>
                         </div>
+                        <div class="card medium" ng-repeat="post in data" ng-if="post.knowledge.name === knowledge0.name">
+			                    <div class="card-image">
+			                      <img src="/static/img/tech2.jpg" alt="sample">
+			                      <span class="card-title" id="title2">{{post.title}}</span>
+			                    </div>
+			                    <div class="card-content">
+			                      <p class="ultra-small">June 30, 2015</p>
+			                      <p>{{post.content}}.</p>
+
+			                    </div>
+			                    <div class="card-action">
+			                      By <a href="#">{{post.owner.userName}}</a>
+			                      <a href="#" class="right">Comment &gt;</a>
+			                    </div>
+			            </div>
 
                     </div>
 
@@ -127,7 +142,7 @@
                        </form>
                         </div>
 						
-                        <div class="card medium" ng-repeat="post in data">
+                        <div class="card medium" ng-repeat="post in data" ng-if="post.knowledge.name === knowledge.name">
 			                    <div class="card-image">
 			                      <img src="/static/img/tech2.jpg" alt="sample">
 			                      <span class="card-title" id="title2">{{post.title}}</span>

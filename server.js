@@ -391,41 +391,10 @@ app.get("/users/:id/MatchingSymbiotics", function (req, res) {
 			peopleWhoKnow.push(knowledge);
 			filtredUsersWhoKnow=[];
 		}
-		//console.log("the resized result", peopleWhoKnow)
+		
 		res.send(peopleWhoKnow);
 	});
-	// db.User.find({_id:req.params.id}).populate("knowledgeIWant").exec(function (error, userFound) {
-	// 	if(error) {
-	// 		res.send("Error");
-	// 	} else {
-	// 		iWant = userFound[0].knowledgeIWant;
-	// 		var length = iWant.length;
-	// 		res.send(iWant);
-	// 		//console.log("all i want :D", iWant);
-	// 		// iWant.forEach( function (iwant) {
-	// 		// 	var query = db.Knowledge.find({_id: iwant._id}).populate('usersWhoKnow')
-	// 		// 	query.exec(function(err,jedis){
-	// 		// 		   if(err) {
-	// 		// 		  		res.send("Error");
-	// 		// 		   } else {
-	// 		// 		   		for (var j=0; j< jedis.length; j++) {
-	// 		// 		      // console.log("the JEDI STRUCTURE IS ******************",jedi);
-	// 		// 			      var knowledge = {
-	// 		// 					_id:jedis[j]._id, 
-	// 		// 					name:jedis[j].name,
-	// 		// 					img:jedis[j].img,
-	// 		// 					usersWhoKnow: jedis[j].usersWhoKnow
-	// 		// 					}
-	// 		// 					peopleWhoKnow.push(knowledge);
-	// 		// 					console.log("PLEAAAAAAAAAAAAAAAAAAAAAAAAAAAASE",peopleWhoKnow);
-	// 		// 				}
-
-	// 		// 		   }
-	// 		// 	  }); 	
-	// 		// }); 
-	// 		// res.send(peopleWhoKnow);
 	
-	// })
 });
 
 //posting the user's preferences
@@ -501,7 +470,7 @@ app.get('/users/:name1/Symbiose/:name2', function (req, res) {
 			{
 				owner:
 		        {
-		          _id: req.session.user._id
+		          _id: req.params.name1
 		        },
 		        watcher:{
 		          _id: req.params.name2
@@ -513,11 +482,11 @@ app.get('/users/:name1/Symbiose/:name2', function (req, res) {
 		          _id: req.params.name2
 		        },
 		        watcher:{
-		          _id: req.session.user._id
+		          _id: req.params.name1
 		        }
 			}
 		]	
-	}).populate("owner").populate("watcher").exec(function (error, results) {
+	}).populate('owner', 'userName').populate('watcher','userName').populate('knowledge', 'name').exec(function (error, results) {
 		if(error) {
 			console.log("ERROR " , error.message)
 			res.send("Error");
@@ -655,7 +624,6 @@ io.on('connection', function(socket){
     		});
     	}
     	
-        // console.log("client["+socket.handshake.session.user._id+"] sent data: " + data);
     });
 
     socket.on('disconnect', function () {

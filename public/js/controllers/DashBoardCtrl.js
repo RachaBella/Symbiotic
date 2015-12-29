@@ -67,24 +67,36 @@ app.controller("DashBoardCtrl", ['$scope','$stateParams','$http','symbioticServi
 
 
 		//***FOR GETTING THE POSTS :***/ 
-	$http
-	.get("/users/"+ $stateParams.name1 + "/Symbiose/"+ $stateParams.name2)
-	.then( function (response) {
-		if (response.data =="Error") {
-			alert(" An error occured while loading the data, refresh the page");
-		} else {
-			$scope.data = response.data;
-			console.log("the data is :", $scope.data)
-		}
-	});
+	if ($stateParams.name1 === $scope.currentUser.userName) {
+		$http
+		.get("/users/"+ $scope.currentUser._id + "/Symbiose/"+ $stateParams.name2)
+		.then( function (response) {
+			if (response.data =="Error") {
+				alert(" An error occured while loading the data, refresh the page");
+			} else {
+				$scope.data = response.data;
+				console.log("the data is :", $scope.data)
+			}
+		});
+	} else {
+		$http
+		.get('/users/'+ id + '/Symbiose/'+ $stateParams.name2 )
+		.then( function (response) {
+			if (response.data =="Error") {
+				alert(" An error occured while loading the data, refresh the page");
+			} else {
+				$scope.data = response.data;
+				console.log("the data is :", $scope.data)
+			}
+		});
+	}
 
 	//adding a new post
 	$scope.addPost = function(knowledge) {
 		console.log(" the post contain : ", $scope.newPost);
 		$scope.newPost.knowledge = knowledge
-		if( $stateParams.name1 === $scope.currentUser.userName) {
 			$http
-			.post("/posts/"+ $scope.currentUser._id + "/" + $stateParams.name2, $scope.newPost)
+			.post("/posts/"+ $scope.currentUser._id + "/" + id, $scope.newPost)
 			.then (function (response) {
 				if (response.data === "Error") {
 					alert("An error occured when posting, please try again");
@@ -92,17 +104,7 @@ app.controller("DashBoardCtrl", ['$scope','$stateParams','$http','symbioticServi
 					console.log(response.data);
 				}
 			})
-		} else {
-			$http
-			.post("/posts/"+ $scope.currentUser._id + "/"+ id, $scope.newPost)
-			.then( function (response) {
-				if (response.data ==="Error") {
-					alert("An error occured when posting, please try again");
-				} else {
-					console.log(response.data)
-				}
-			})
-		}
+		
 	}
 
 //mySymbiotic structure : 
