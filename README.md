@@ -9,3 +9,11 @@ The two users have then a dashboard, where they can share their Questions/Respon
 ##Technologies used 
 This project is built in NodeJs/Express, MongoDb as a back end, and AngularJs for front end. 
 
+##Using the code source
+After forking this project to your repository : 
+  npm install , to install all the dependencies
+  mongod
+  node server or nodemon
+  
+
+
