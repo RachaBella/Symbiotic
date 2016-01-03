@@ -11,8 +11,8 @@ This project is built in NodeJs/Express, MongoDb as a back end, and AngularJs fo
 
 ##Using the code source
 After forking this project to your repository : 
-  npm install , to install all the dependencies
-  mongod
+  npm install , to install all the dependencies |||
+  mongod ||
   node server or nodemon
   
 
